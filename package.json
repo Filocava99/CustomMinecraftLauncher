@@ -1,0 +1,88 @@
+{
+  "name": "soulnetworklauncher",
+  "version": "0.0.0",
+  "license": "MIT",
+  "author": "Filippo Cavallari",
+  "scripts": {
+    "dev": "electron-webpack dev",
+    "compile": "electron-webpack",
+    "pack": "electron-builder --dir",
+    "dist": "yarn compile && electron-builder",
+    "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
+    "publish": "set GH_TOKEN='b1bb13f34a60761673d6123b1f47f46a0e7abc6d' && yarn compile && electron-builder --publish",
+    "release": "set GH_TOKEN='b1bb13f34a60761673d6123b1f47f46a0e7abc6d' && yarn compile && electron-builder"
+  },
+  "dependencies": {
+    "adm-zip": "^0.4.11",
+    "auto-updater": "^1.0.2",
+    "bootstrap": "^3.3.1",
+    "bootstrap-slider": "^10.2.0",
+    "child_process": "^1.0.2",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "ejs": "~2.5.7",
+    "ejs-electron": "^2.0.3",
+    "electron-squirrel-startup": "^1.0.0",
+    "express": "~4.16.0",
+    "find-java-home": "^0.2.0",
+    "http-errors": "~1.6.2",
+    "jquery": "^3.3.1",
+    "minecraft-skin": "^0.1.2",
+    "morgan": "~1.9.0",
+    "mysql2": "^1.6.1",
+    "node-cmd": "^3.0.0",
+    "os": "^0.1.1",
+    "path": "^0.12.7",
+    "popper.js": "^1.14.4",
+    "request": "^2.87.0",
+    "request-promise": "^4.2.2",
+    "source-map-support": "^0.5.12",
+    "update-electron-app": "^1.3.0",
+    "url": "^0.11.0"
+  },
+  "devDependencies": {
+    "electron": "5.0.5",
+    "electron-builder": "^20.44.4",
+    "electron-compile": "^6.4.4",
+    "electron-compilers": "^5.9.0",
+    "electron-prebuilt-compile": "^4.0.0",
+    "electron-webpack": "^2.7.1",
+    "webpack": "~4.35.0"
+  },
+  "build": {
+    "appId": "it.tigierrei.soulnetworklauncher",
+    "productName": "SoulNetworkLauncher",
+    "copyright": "Copyright © year ${author}",
+    "icon": "src/main/public/images/sn.png",
+    "files": [
+      "./src/**/*",
+      "./build/**/*",
+      "../src/**/*"
+    ],
+    "asar": "true",
+    "mac": {
+      "category": "public.app-category.games",
+      "target": "dmg",
+      "identity": "${env.CSC_LINK}",
+      "icon": "src/main/public/images/favicon.icns"
+    },
+    "win": {
+      "publish": ["github"],
+      "repo": "SoulNetworkLauncher",
+      "owner": "tigierrei"
+    },
+    "dmg": {
+      "background": "src/main/public/images/sfondo.jpg",
+      "icon": "src/main/public/images/favicon.icns",
+      "title": "${productName} ${version}"
+    },
+    "nsis": {
+      "installerIcon": "src/main/public/images/favicon.ico",
+      "uninstallerIcon": "src/main/public/images/favicon.ico",
+      "installerLanguages": [
+        "it-IT"
+      ],
+      "language": "0010"
+    }
+  }
+}

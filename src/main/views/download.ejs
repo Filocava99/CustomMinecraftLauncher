@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update available</title>
+
+    <link rel="stylesheet" type="text/css" href="../../../node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../../../node_modules/bootstrap-slider/dist/css/bootstrap-slider.css">
+    <link rel="stylesheet" type="text/css" href="../public/stylesheets/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../public/stylesheets/style.css">
+
+    <script>
+        window.jQuery = window.$ = require('jquery');
+    </script>
+
+    <script src="../../../node_modules/jquery/dist/jquery.js"></script>
+    <script src="../../../node_modules/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="../../../node_modules/bootstrap-slider/dist/bootstrap-slider.js"></script>
+    <style>html{overflow: hidden}</style>
+</head>
+
+<script>
+    const ipcRenderer = require('electron').ipcRenderer;
+    ipcRenderer.on('update',(event,payload) => {
+        $('.progress-bar').attr('aria-valuenow',payload.percentage);
+        $('.progress-bar').text(payload.percentage+"%");
+        $('.progress-bar').width(payload.percentage+"%");
+    });
+</script>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="well">
+            <h2 class="text-center">Downloading...</h2>
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="0"
+                     aria-valuemin="0" aria-valuemax="100" style="width:0%">
+                    0%
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
