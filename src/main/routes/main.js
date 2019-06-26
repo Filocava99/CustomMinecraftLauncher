@@ -9,9 +9,10 @@ module.exports = {
         const rp        = require('request-promise');
         const path      = require('path');
         const url       = require('url');
+
         ejse.listen();
 
-        const isProd = false;
+        const isProd = true;
         var stringPath;
         if(isProd){
             stringPath = "/src/main"
@@ -23,9 +24,52 @@ module.exports = {
                 nodeIntegration: true
             }});
         globals.mainWin.setResizable(false);
-        //globals.mainWin.openDevTools();
         globals.mainWin.setMenu(null);
 
+        //Updater
+        const log = require('electron-log');
+        const {autoUpdater} = require("electron-updater");
+
+        autoUpdater.setFeedURL({
+            provider: 'github',
+            repo: 'SoulNetworkLauncher',
+            owner: 'tigierrei',
+            private: true,
+            token: '2a47d60fe17d3c765116cd7d712e5f3974353a13'
+        })
+
+        autoUpdater.logger = log;
+        autoUpdater.logger.transports.file.level = 'info';
+        log.info('App starting...');
+
+        function sendStatusToWindow(text) {
+            log.info(text);
+            globals.mainWin.webContents.send('message', text);
+        }
+
+        autoUpdater.on('checking-for-update', () => {
+            sendStatusToWindow('Checking for update...');
+        });
+        autoUpdater.on('update-available', (info) => {
+            sendStatusToWindow('Update available.');
+        });
+        autoUpdater.on('update-not-available', (info) => {
+            sendStatusToWindow('Update not available.');
+        });
+        autoUpdater.on('error', (err) => {
+            sendStatusToWindow('Error in auto-updater. ' + err);
+        });
+        autoUpdater.on('download-progress', (progressObj) => {
+            let log_message = "Download speed: " + progressObj.bytesPerSecond;
+            log_message = log_message + ' - Downloaded ' + progressObj.percent + '%';
+            log_message = log_message + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
+            sendStatusToWindow(log_message);
+        });
+        autoUpdater.on('update-downloaded', (info) => {
+            sendStatusToWindow('Update downloaded');
+        });
+        globals.mainWin.webContents.openDevTools()
+        await autoUpdater.checkForUpdatesAndNotify();
 
         globals.mainWin.loadURL(
             url.format({

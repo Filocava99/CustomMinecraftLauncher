@@ -1,8 +1,11 @@
 const globals = require('./routes/globals');
+
 // Questo metodo viene chiamato quando Electron ha finito
 // l'inizializzazione ed è pronto a creare le finestre browser.
 // Alcune API possono essere utilizzate solo dopo che si verifica questo evento.
-globals.app.on('ready', require('./routes/main.js').createMainWindow);
+globals.app.on('ready', async function (){
+    require('./routes/main.js').createMainWindow();
+});
 
 // Terminiamo l'App quando tutte le finestre vengono chiuse.
 globals.app.on('window-all-closed', () => {
