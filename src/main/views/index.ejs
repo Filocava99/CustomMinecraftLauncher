@@ -8,7 +8,6 @@
     <script>
         jQuery(document).ready(function($) {
             $('.launchSN').click(function () {
-                alert("click")
                 const ipcRenderer = require('electron').ipcRenderer;
                 ipcRenderer.send('login',{username: $('#email').val(), password: $('#password').val(),rememberMe: $('#rememberMe').val() == 'true' ? true : false});
             });
@@ -19,6 +18,14 @@
             $('#tray').click(function () {
                 const ipcRenderer = require('electron').ipcRenderer;
                 ipcRenderer.send('tray',{});
+            })
+            $('#register').click(function () {
+                const ipcRenderer = require('electron').ipcRenderer;
+                ipcRenderer.send('register',{});
+            })
+            $('#forgot-password').click(function () {
+                const ipcRenderer = require('electron').ipcRenderer;
+                ipcRenderer.send('forgot-password',{});
             })
         });
 
@@ -107,10 +114,10 @@
               <td width="30%">
               </td>
               <td width="20%" class="text-profilaione">
-                <a href="https://minecraft.net/it-it/store/minecraft/#register">Register</a>
+                <a id="register">Register</a>
               </td>
               <td width="20%" class="text-profilaione">
-               <a href="https://account.mojang.com/password">Forgot Password?</a>
+               <a id="forgot-password">Forgot Password?</a>
               </td>
               <td width="30%">
               </td>

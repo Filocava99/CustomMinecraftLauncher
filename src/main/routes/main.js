@@ -1,5 +1,4 @@
 module.exports = {
-    //TODO Estrarre la funzione dall'oggetto?
 
     createMainWindow: async function() {
         const ipcMain   = require('electron').ipcMain;
@@ -25,6 +24,7 @@ module.exports = {
             }});
         globals.mainWin.setResizable(false);
         globals.mainWin.setMenu(null);
+        //globals.mainWin.webContents.openDevTools();
 
         //Updater
         const log = require('electron-log');
@@ -36,7 +36,7 @@ module.exports = {
             owner: 'tigierrei',
             private: true,
             token: '2a47d60fe17d3c765116cd7d712e5f3974353a13'
-        })
+        });
 
         autoUpdater.logger = log;
         autoUpdater.logger.transports.file.level = 'info';
@@ -68,7 +68,6 @@ module.exports = {
         autoUpdater.on('update-downloaded', (info) => {
             sendStatusToWindow('Update downloaded');
         });
-        globals.mainWin.webContents.openDevTools()
         await autoUpdater.checkForUpdatesAndNotify();
 
         globals.mainWin.loadURL(
@@ -78,12 +77,8 @@ module.exports = {
                 slashes: true
             }));
 
-        if(require('electron-squirrel-startup')) return;
-
         await require('./setup')();
-
-        //var zip = archiver("C:/Users/filip/Desktop/Test.zip");
-        //zip.extractAllTo("C:/Users/filip/Desktop",true);
+        console.log(globals.launcherDir)
 
         // Creazione della finestra del browser.
 
@@ -130,17 +125,12 @@ module.exports = {
             }));
         }
 
-        //mainWin.loadURL('http://google.com');
-
-        // Open the DevTools.
-        //globals.mainWin.webContents.openDevTools()
-
         // Emesso quando la finestra viene chiusa.
         globals.mainWin.on('closed', () => {
             // Eliminiamo il riferimento dell'oggetto window;  solitamente si tiene traccia delle finestre
             // in array se l'applicazione supporta più finestre, questo è il momento in cui
             // si dovrebbe eliminare l'elemento corrispondente.
-            globals.mainWin = null
+            globals.mainWin = null;
             utils.saveConfig();
         });
 
@@ -153,8 +143,29 @@ module.exports = {
             globals.mainWin.minimize();
         });
 
+        ipcMain.on('register',(event,payload) => {
+            const { BrowserWindow } = require('electron');
+            let child = new BrowserWindow({ parent: globals.mainWin, modal: true, show: false });
+            child.loadURL('https://minecraft.net/it-it/store/minecraft/#register');
+            child.setMenu(null);
+            child.once('ready-to-show', () => {
+                child.show()
+            });
+        });
+
+        ipcMain.on('forgot-password',(event,payload) => {
+            const { BrowserWindow } = require('electron');
+            let child = new BrowserWindow({ parent: globals.mainWin, modal: true, show: false });
+            child.loadURL('https://account.mojang.com/password');
+            child.setMenu(null);
+            child.once('ready-to-show', () => {
+                child.show()
+            });
+        });
+
         ipcMain.on('logout',(event,payload) =>{
-            globals.launcherConfig.savedUsername,globals.launcherConfig.savedPassword = undefined;
+            globals.launcherConfig.savedUsername = undefined;
+            globals.launcherConfig.savedPassword = undefined;
             utils.saveConfig();
             globals.mainWin.loadURL(url.format({
                 pathname:path.join(path.resolve(__dirname), stringPath, '/views/index.ejs'),
@@ -165,12 +176,10 @@ module.exports = {
 
         //https://crafatar.com/renders/body/2842ec6ea599466298472a1edbb9619b
         ipcMain.on('login',async (event,payload) =>{
-            console.log("here we go")
             if(payload.username && payload.password){
                 var body = await utils.mojangAuthentication(payload.username,payload.password);
                 if(body != null){
                     if(payload.rememberMe){
-                        console.log("remembered");
                         globals.launcherConfig.savedUsername = payload.username;
                         globals.launcherConfig.savedPassword = payload.password;
                         utils.saveConfig();
@@ -219,9 +228,21 @@ module.exports = {
             }));
         });
 
-        ipcMain.on('packetSelected',(event,payload) => {
-            globals.selectedPacket = payload.selectedPacket;
-            ejse.data({username: globals.username,maxPermSize: globals.maxPermSize, maxAllocableRam: globals.maxAllocableRam, savedMaxPermSize: globals.launcherConfig.savedMaxPermSize, savedRam: globals.launcherConfig.savedRam});
+        ipcMain.on('packetSelected',async (event,payload) => {
+            globals.packets_list.forEach(function (packet) {
+               if(packet.Name === payload.selectedPacket){
+                   globals.selectedPacket = packet;
+                   return;
+               }
+            });
+            var serverStatus;
+            try {
+                serverStatus = await require('is-port-reachable')(parseInt(globals.selectedPacket.Port), {host: globals.selectedPacket.Ip});
+            }catch (e) {
+                serverStatus = false;
+            }
+            console.log(serverStatus);
+            ejse.data({username: globals.username,maxPermSize: globals.maxPermSize, maxAllocableRam: globals.maxAllocableRam, savedMaxPermSize: globals.launcherConfig.savedMaxPermSize, savedRam: globals.launcherConfig.savedRam, serverStatus: serverStatus});
             globals.mainWin.loadURL(url.format({
                 pathname:path.join(path.resolve(__dirname), stringPath, '/views/launcher.ejs'),
                 protocol: 'file:',
@@ -230,14 +251,17 @@ module.exports = {
         });
 
         ipcMain.on('play',async (event,payload) => {
-            //TODO Aggiornamento modpack
             globals.launcherConfig.savedRam = payload.ram;
             globals.launcherConfig.savedMaxPermSize = payload.maxPermSize;
-            if (globals.launcherConfig.installed_modpacks.includes(globals.selectedPacket)) {
+            if (globals.launcherConfig.installed_modpacks.includes(globals.selectedPacket.Name+"-"+globals.selectedPacket.Version)) {
                 require('./launchGame')(globals.selectedPacket);
             } else {
-                await utils.downloadModPack(`http://soulnetwork.it/launcher/modpacks/${process.platform}/${globals.selectedPacket}.zip`, globals.launcherDir + "/modpacks/" ,globals.selectedPacket, '.zip', true, globals.selectedPacket, require('./launchGame'));
-                globals.launcherConfig.installed_modpacks.push(globals.selectedPacket);
+                //Se esiste una vecchia versiona installata la cancello
+                if(fs.existsSync(globals.launcherDir+"/modpacks/"+globals.selectedPacket.Name)){
+                    require('rimraf').sync(globals.launcherDir+"/modpacks/"+globals.selectedPacket.Name);
+                }
+                await utils.downloadModPack(`http://soulnetwork.it/launcher/modpacks/${process.platform}/${globals.selectedPacket.Name}.zip`, globals.launcherDir + "/modpacks/" ,globals.selectedPacket, '.zip', true, globals.selectedPacket, require('./launchGame'));
+                globals.launcherConfig.installed_modpacks.push(globals.selectedPacket.Name+"-"+globals.selectedPacket.Version);
             }
             utils.saveConfig();
         });

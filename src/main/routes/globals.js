@@ -24,4 +24,4 @@ module.exports = {
     selectedPacket: null,
 
     javaPath: null
-}
+};

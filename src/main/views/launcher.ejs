@@ -47,7 +47,7 @@
     <table>
       <tr>
         <td width="35%" style="text-align:left">
-          <div class="server"><i bubble status="online"></i><span>Western Europe</span></div>
+          <div class="server"><i bubble status="<%- (serverStatus == true) ? 'online' : 'offline' %>"></i><span>Server status</span></div>
         </td>
         <td width="30%">
           <img style="width:100%" src="../public/images/sn-launcher.png" alt="">
