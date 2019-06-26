@@ -1,6 +1,6 @@
 {
   "name": "soulnetworklauncher",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "license": "MIT",
   "author": "Filippo Cavallari",
   "scripts": {
@@ -9,8 +9,8 @@
     "pack": "electron-builder --dir",
     "dist": "yarn compile && electron-builder",
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
-    "publish": "set GH_TOKEN='b1bb13f34a60761673d6123b1f47f46a0e7abc6d' && yarn compile && electron-builder --publish",
-    "release": "set GH_TOKEN='b1bb13f34a60761673d6123b1f47f46a0e7abc6d' && yarn compile && electron-builder"
+    "publish": "set GH_TOKEN=b1bb13f34a60761673d6123b1f47f46a0e7abc6d && yarn compile && electron-builder --publish",
+    "release": "set GH_TOKEN=b1bb13f34a60761673d6123b1f47f46a0e7abc6d && yarn compile && electron-builder"
   },
   "dependencies": {
     "adm-zip": "^0.4.11",
@@ -66,10 +66,12 @@
       "identity": "${env.CSC_LINK}",
       "icon": "src/main/public/images/favicon.icns"
     },
-    "win": {
-      "publish": ["github"],
+    "publish": {
+      "provider": "github",
       "repo": "SoulNetworkLauncher",
       "owner": "tigierrei"
+    },
+    "win": {
     },
     "dmg": {
       "background": "src/main/public/images/sfondo.jpg",
