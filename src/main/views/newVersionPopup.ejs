@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update available</title>
+
+    <link rel="stylesheet" type="text/css" href="../../../node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../../../node_modules/bootstrap-slider/dist/css/bootstrap-slider.css">
+    <link rel="stylesheet" type="text/css" href="../public/stylesheets/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../public/stylesheets/style.css">
+
+    <script>
+        window.jQuery = window.$ = require('jquery');
+    </script>
+
+    <script src="../../../node_modules/jquery/dist/jquery.js"></script>
+    <script src="../../../node_modules/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="../../../node_modules/bootstrap-slider/dist/bootstrap-slider.js"></script>
+</head>
+<script>
+    const ipcRenderer = require('electron').ipcRenderer;
+
+    function scarica() {
+        ipcRenderer.send('updater',{update: true});
+    }
+
+    function annulla() {
+        ipcRenderer.send('updater',{update: false});
+    }
+</script>
+<body style="background-color: transparent">
+    <div class="container-fluid">
+        <div class="well">
+        <div class="row">
+            <div class="col-lg-12">
+                <h4 class="text-center">Nuova versione del launcher disponibile, vuoi scaricarla?</h4>
+            </div>
+        </div>
+        <div class="row">
+            <button class="btn btn-success" style="float: left; margin-left: 60px" onclick="scarica()">Scarica</button>
+            <button class="btn btn-danger" style="float: right; margin-right: 60px" onclick="annulla()">Annulla</button>
+        </div>
+        </div>
+    </div>
+</body>
+</html>

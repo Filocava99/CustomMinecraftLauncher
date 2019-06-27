@@ -1,0 +1,557 @@
+@font-face {
+    font-family: 'Gotham-Bold';
+    src: url(../fonts/Gotham-Bold.otf);
+    /*src: local(../fonts/Gotham-Bold);*/
+}
+
+@font-face {
+    font-family: 'Gotham-Thin';
+    src: url(../fonts/Gotham-Thin.otf);
+    /*src: local(../fonts/Gotham-Thin);*/
+}
+
+html,body{
+    padding:0px;
+    margin:0px;
+    font-family: 'Gotham-Thin';
+    background:#1a1a1a;
+    overflow: hidden;
+}
+
+a:hover {
+	color:#157fff;
+}
+
+a:link {
+  color:#157fff;
+}
+
+a {
+  color:white;
+  text-decoration: none
+}
+
+.container{
+  width:1024px;
+  height:700px;
+  background-image: url("../images/bg.png");
+  color:#fff;
+  position:relative;
+}
+
+.close{
+	background-color:black;
+	padding:10px;
+	text-align:right;
+}
+
+table {
+	width:100%;
+}
+
+.headerSN {
+	padding:10px;
+}
+
+.server{
+  font-size:15px;
+  position:absolute;
+  width:314px;
+  padding:10px;padding-right:0px;
+  
+  background: linear-gradient(to right
+    ,rgba(21,127,255,0) 1%
+    ,rgba(21,127,255,0.2) 15%
+    ,rgba(21,127,255,0.2) 71%
+    ,rgba(21,127,255,0) 100%);
+}
+
+i[bubble]{
+  position:relative;display:inline-block;
+  width:14px;height:14px;
+  border-radius:7px;
+  background:#aaa;
+  margin-right:13px;
+  overflow:hidden;
+
+}
+i[bubble]:before{
+  width:14px;height:14px;
+  content:"";
+  background:#ff00ff;
+  position:absolute;
+  left:0px;top:0px;
+  background: -webkit-linear-gradient(transparent 60%, rgba(255,255,255,0.56) 96%);
+}
+i[bubble]:after{
+  content:"";
+  width:12px;height:5px;
+  border-radius:14px;
+  position:absolute;top:0px;left:1px;
+  opacity:0.76;
+}
+i[bubble][status='online']{
+  background:#19ab10;
+}
+i[bubble][status='offline']{
+  background:#ab102d;
+}
+
+.logout {
+  background: #157fff;
+  color:white;
+  border: 0px;
+  text-transform: uppercase;
+  padding:5px 10px;
+  margin-top:10px;
+  font-size: 10px;
+}
+
+.name {
+  text-transform: uppercase;
+  color: #157fff;
+  font-family: 'Gotham-Bold';
+  font-size: 15px;
+}
+
+.info {
+  color:grey;
+  font-size: 13px
+}
+
+.navSN {
+	padding:10px;
+}
+
+.navbarSN {
+	font-family: 'Gotham-Bold';
+	height: 40px;
+	text-align: center;
+	border: 0px;
+	font-size: 14px
+}
+
+.navbaricon {
+	margin-right:6px;
+}
+
+.mainSN{
+  overflow:hidden;
+  z-index:1;
+  padding:5px 10px;
+}
+.mainSN > .content {
+	height:230px;
+    overflow: auto;
+    padding:20px;
+    background: rgba(0,0,0,0.5);
+}
+
+.content p {
+    margin: 0px;
+    font-size: 12px;
+    color:grey;
+}
+
+.mainSN > .content1 {
+  height:230px;
+    overflow: auto;
+    padding:20px;
+    background: rgba(0,0,0,0.5);
+    width:70%;
+    display: inline-block;
+}
+
+.content1 p {
+    margin: 0px;
+    font-size: 12px;
+    color:grey;
+}
+
+.mainSN > .content2 {
+  height:230px;
+    overflow: auto;
+    padding:20px;
+    background: rgba(0,0,0,0.5);
+    width:20%;
+    display: inline-block;
+}
+
+.content2 p {
+    margin: 0px;
+    font-size: 15px;
+    color:grey;
+    font-family: 'Gotham-Bold';
+}
+
+.content2 table {
+height: 100%;
+}
+
+.loadingSN {
+	padding: 5px 10px;
+}
+
+progress{
+  width:100%;
+  height:9px;
+  margin:0px;padding:0px;
+  /* reset - this allows us to do awesome progress bar skins */
+  -webkit-appearance:none;
+	border:none;
+	    background: rgba(0,0,0,0.5);
+}
+progress::-webkit-progress-bar{
+	background: #000;
+
+  border-radius:2px;
+
+}
+progress::-webkit-progress-value{
+
+	background: -webkit-linear-gradient(
+     rgb(1,127,255) 100%
+    ,rgb(1,127,255) 100%
+    ,rgb(21,127,255) 100%
+    ,#000 91%
+  );
+
+  transition: width 260ms linear;
+}
+progress.red::-webkit-progress-value{
+
+	background: -webkit-linear-gradient(
+     rgb(184,128,128) 100%
+    ,rgb(219,0,0) 100%
+    ,rgb(219,0,0) 100%
+    ,#680000 100%
+  );
+
+}
+
+.filename {
+	height: 16px;
+	font-size: 12px;
+	color: #a1a1a1;
+	text-align: left;
+
+}
+
+.status {
+	height: 16px;
+	font-size: 12px;
+	color: #a1a1a1;
+	text-align: center;
+
+}
+
+.percent {
+	height: 16px;
+	font-size: 12px;
+	color: #a1a1a1;
+	text-align: right;
+}
+
+.launchSN {
+	background: rgba(21,127,255,0.1);
+	color:white;
+	text-align: center;
+	font-family: 'Gotham-Bold';
+	border: 1px solid #157fff;
+}
+
+
+.footerSN{
+	background-color: black;
+	padding: 10px 0px;
+	text-align: center;
+	bottom: 0px;
+	position: absolute;
+	width: 100%;
+}
+
+.socialSN {
+	margin-right: 13px
+}
+
+a:hover{
+	color: #157fff;
+ 	cursor:pointer;
+}
+
+.bottonlaunchSN{
+  cursor:pointer;
+  color:white !important;
+}
+
+.bottonlaunchSN:hover{
+	box-shadow: 0px 0px 30px 0px rgba(21, 127, 255, 0.4);
+	cursor:pointer;
+	color:#157fff;
+}
+
+td a{width:100%;display:block;}
+
+.input {
+  width:97%;
+   background: rgba(0,0,0,0.5);
+   border:0px;
+   color:white;
+   padding:5px;
+}
+
+.text-profilaione {
+  text-align: center;
+  color: grey;
+  font-family: 'Gotham-Bold';
+  font-size: 12px;
+}
+
+.text-profilaione  a{
+  color: grey;
+}
+
+.text-profilaione a:hover {
+  color: white;
+}
+
+.text-titolo-pack {
+  text-align: center;
+  color:#157fff; 
+  font-family: 'Gotham-Bold';
+  font-size: 30px
+}
+
+.content-pack {
+  height:230px;
+    overflow: auto;
+    padding:20px;
+    background: rgba(0,0,0,0.5);
+    width:70%;
+    margin:0 auto;
+}
+
+.content-pack p {
+    margin: 0px;
+    font-size: 12px;
+    color:grey;
+}
+
+.pack {
+  background: rgba(21,127,255,0.2);
+}
+
+.div-pack {
+  padding:15px;
+}
+
+.pack-titolo{
+  text-align: center;
+  color:#157fff;
+  font-family: 'Gotham-Bold';
+  font-size: 15px;
+  text-transform: uppercase
+}
+
+.pack-descrizione{
+  text-align: center;
+  color: white;
+  font-family: 'Gotham-Bold';
+  font-size: 10px;
+  text-transform: uppercase
+}
+
+.pack-box:hover{
+  box-shadow: 0px 0px 30px 0px rgba(21, 127, 255, 0.4);
+  border:1px solid #157fff;
+  cursor:pointer;
+}
+
+.pack-box{
+  border:1px solid transparent;
+  cursor:pointer;
+}
+
+.interface-icon:hover {
+  color:#157fff !important;
+}
+
+
+.slidecontainer {
+    width: 100%;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 2px;
+    background: #157fff;
+    outline: none;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 100px;
+    background: #157fff;
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    border-radius: 100px;
+    background: #157fff;
+    cursor: pointer;
+}
+
+#demo {
+color:white;
+  font-size: 20px;
+}
+
+.custom-select {
+  position: relative;
+  font-family: 'Gotham-Bold';
+  font-size: 12px;
+}
+.custom-select select {
+  display: none; /*hide original SELECT element:*/
+}
+.select-selected {
+  background-color: rgba(21,127,255,0.6);
+}
+/*style the arrow inside the select element:*/
+.select-selected:after {
+  position: absolute;
+  content: "";
+  top: 11px;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-color: #fff transparent transparent transparent;
+}
+/*point the arrow upwards when the select box is open (active):*/
+.select-selected.select-arrow-active:after {
+  border-color: transparent transparent #fff transparent;
+  top: 3px;
+}
+/*style the items (options), including the selected item:*/
+.select-items div,.select-selected {
+  color: #ffffff;
+  padding: 4px 16px;
+  border: 1px solid black;
+  cursor: pointer;
+
+}
+/*style items (options):*/
+.select-items {
+
+  background-color: rgba(21,127,255,0.1);
+  top: 100%;
+
+}
+/*hide the items when the select box is closed:*/
+.select-hide {
+  display: none;
+}
+.select-items div:hover, .same-as-selected {
+  background-color: rgba(21,127,255,0.6);
+}
+
+:not(input):not(textarea),
+:not(input):not(textarea)::after,
+:not(input):not(textarea)::before {
+    -webkit-user-select: none;
+    user-select: none;
+    cursor: default;
+}
+input, button, textarea, :focus {
+    outline: none; // You should add some other style for :focus to help UX/a11y
+}
+
+.pack-titolo{
+    color:#157fff;
+    font-family: 'Gotham-Bold';
+    font-size: 15px;
+    text-transform: uppercase;
+    padding-left:30px;
+}
+
+.pack-descrizione{
+    color: white;
+    font-family: 'Gotham-Bold';
+    font-size: 10px;
+    text-transform: uppercase;
+    padding-left:30px;
+}
+
+.btn {
+    cursor: pointer;
+    border:0px;
+    padding:0px;
+    background-color: transparent;
+    border:1px solid transparent;
+    margin-bottom:10px;
+}
+
+.btn table {
+    border: 0px;
+}
+
+.btn tr {
+    background: rgba(21,127,255,0.2);
+    border: 0px;
+}
+
+.btn td {
+    padding: 5px;
+    border: 0px;
+    text-align: left;
+}
+
+.active {
+    background: #157fff;
+    box-shadow: 0px 0px 30px 0px rgba(21, 127, 255, 0.4);
+}
+
+.active .pack-titolo  {
+    background: #157fff;
+    box-shadow: 0px 0px 30px 0px rgba(21, 127, 255, 0.4);
+    color:black;
+}
+
+.btn:hover {
+    box-shadow: 0px 0px 30px 0px rgba(21, 127, 255, 0.4);
+    border:1px solid #157fff;
+    cursor:pointer;
+}
+
+.img-pack{
+    width: 100%;
+    padding-left:15px;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.5);
+    border:1px solid #157fff;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #157fff;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #157fff;
+}

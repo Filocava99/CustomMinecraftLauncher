@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<%- include('partials/header',{title: 'Soul Network Launcher'}) %>
+
+<body>
+    <script>
+        var selectedPacket;
+
+        jQuery(document).ready(function($) {
+            $('.launchSN').click(function () {
+                if(!selectedPacket){
+                    alert("Devi selezionare un pacchetto per continuare!");
+                    return;
+                }
+                const ipcRenderer = require('electron').ipcRenderer;
+                ipcRenderer.send('packetSelected',{selectedPacket: selectedPacket });
+            });
+            $('#close').click(function () {
+                const ipcRenderer = require('electron').ipcRenderer;
+                ipcRenderer.send('close',{});
+            })
+            $('#tray').click(function () {
+                const ipcRenderer = require('electron').ipcRenderer;
+                ipcRenderer.send('tray',{});
+            });
+            $('.btn').click(function () {
+                //TODO Classe pacchetto selezionato
+                selectedPacket = $(this).find('.pack-titolo').text();
+            });
+        });
+    </script>
+    <div class="container">
+
+        <div class="close">
+            <i id="tray" class="fas fa-minus interface-icon" style="margin-right:6px"></i>
+            <i id="close" class="fas fa-times interface-icon"></i>
+        </div>
+
+
+    <div class="headerSN">
+      <table>
+        <tr>
+          <td width="35%">
+          </td>
+          <td width="30%">
+            <img style="width:100%" src="../public/images/sn-launcher.png" alt="">
+          </td>
+          <td width="35%">
+          </td>
+        </tr>
+      </table> 
+    </div>
+
+    <div class="headerSN">
+      <table>
+        <tr>
+          <td width="100%" class="text-titolo-pack">
+            CHOOSE YOUR PACK!
+          </td>
+        </tr>
+      </table> 
+    </div>
+    <div class="mainSN">
+      <div class="content-pack">
+          <div id="myDIV">
+              <button class="btn active" style="display:none">
+              </button>
+          <% packets.forEach(function (packet) { %>
+              <button class="btn">
+                  <table cellspacing="0" cellpadding="0">
+                      <tr>
+                          <td width="20%" height="60px">
+                              <img style="width:100%" src="<%= packet.ImgUrl %>" alt="">
+                          </td>
+                          <td width="80%">
+                              <div class="div-pack">
+                                  <spam class="pack-titolo"><%= packet.Name %></spam><br>
+                                  <spam class="pack-descrizione"><%= packet.Description %></spam>
+                              </div>
+                          </td>
+                      </tr>
+                  </table>
+              </button>
+          <% }) %>
+          </div>
+      </div>
+    </div>
+    <div class="headerSN" style="margin-top:10px">
+      <table>
+        <tr>       
+          <td width="30%">
+          </td>
+          <td width="40%" class="launchSN">
+            <a class="bottonlaunchSN" style="padding: 27px 0px">
+                NEXT
+             </a>
+          </td>
+          <td width="30%">
+          </td>
+        </tr>
+      </table> 
+    </div>
+
+    <div class="footerSN">
+      <a title="Facebook Soul Network"><i class="fab fa-facebook socialSN"></i></a>
+      <a title="Twitter Soul Network"><i class="fab fa-twitter socialSN"></i></a>
+      <a title="Telegram Soul Network"><i class="fab fa-telegram-plane socialSN"></i></a>
+      <a title="Twitch Soul Network"><i class="fab fa-twitch socialSN"></i></a>
+      <a title="You Tube Soul Network"><i class="fab fa-youtube socialSN"></i></a>
+    </div>
+
+
+  </div>
+
+    <script>
+        var btnContainer = document.getElementById("myDIV");
+
+        // Get all buttons with class="btn" inside the container
+        var btns = btnContainer.getElementsByClassName("btn");
+
+        // Loop through the buttons and add the active class to the current/clicked button
+        for (var i = 0; i < btns.length; i++) {
+            btns[i].addEventListener("click", function() {
+                var current = document.getElementsByClassName("active");
+                current[0].className = current[0].className.replace(" active", "");
+                this.className += " active";
+            });
+        }
+    </script>
+
+</body>
+
+</html>
