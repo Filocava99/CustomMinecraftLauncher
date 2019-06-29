@@ -1,6 +1,6 @@
 {
   "name": "soulnetworklauncher",
-  "version": "0.0.4",
+  "version": "0.0.1",
   "license": "MIT",
   "author": "Filippo Cavallari",
   "description": "Launcher ufficiale di SoulNetwork",
@@ -26,6 +26,7 @@
     "electron-updater": "^4.0.6",
     "express": "~4.16.0",
     "find-java-home": "^0.2.0",
+    "fs": "0.0.1-security",
     "http-errors": "~1.6.2",
     "is-port-reachable": "^2.0.1",
     "jquery": "^3.3.1",

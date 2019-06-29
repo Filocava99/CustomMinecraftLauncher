@@ -16,9 +16,16 @@ module.exports = function(selectedPacketName){
     var minecraftCore = packetDir+"/cores/"+packetConfig.minecraftVersion+".jar";
     var mainClass = (packetConfig.forgeJar != undefined) ? 'net.minecraft.launchwrapper.Launch' : 'net.minecraft.client.main.Main';
     var forge = (packetConfig.forgeJar != undefined) ? packetDir+"/cores/"+packetConfig.forgeJar+";" : "";
-    var forgeCommand = (packetConfig.forgeJar != undefined) ? '--tweakClass cpw.mods.fml.common.launcher.FMLTweaker' : "";
+    var forgeCommand = "";
+    if(packetConfig.forgeJar != undefined){
+        if(packetConfig.assets == '1.12'){
+            forgeCommand = '--tweakClass net.minecraftforge.fml.common.launcher.FMLTweaker --versionType Forge'
+        }else{
+            forgeCommand = '--tweakClass cpw.mods.fml.common.launcher.FMLTweaker'
+        }
+    }
     var extraStartCommands = (process.platform == 'win32') ? "-XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump" : "";
-    cmd.run(`java -XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump -Djava.library.path=${nativesPath} -cp ${librariesPath}${forge}${minecraftCore} -Xmx${globals.launcherConfig.savedRam}G -XX:MaxPermSize=${globals.launcherConfig.savedMaxPermSize}m ${mainClass} --username ${globals.username} --version ${packetConfig.minecraftVersion} --gameDir ${packetDir} --assetsDir ${assetsPath} --assetIndex ${packetConfig.assets} --uuid ${globals.uuid} --accessToken ${globals.accessToken} --userProperties {} --userType mojang ${forgeCommand}`);
+    cmd.run(`java ${extraStartCommands} -Djava.library.path=${nativesPath} -cp ${librariesPath}${forge}${minecraftCore} -Xmx${globals.launcherConfig.savedRam}G -XX:MaxPermSize=${globals.launcherConfig.savedMaxPermSize}m ${mainClass} --username ${globals.username} --version ${packetConfig.minecraftVersion} --gameDir ${packetDir} --assetsDir ${assetsPath} --assetIndex ${packetConfig.assets} --uuid ${globals.uuid} --accessToken ${globals.accessToken} --userProperties {} --userType mojang ${forgeCommand}`);
     console.log(`java ${extraStartCommands} -Djava.library.path=${nativesPath} -cp ${librariesPath}${forge}${minecraftCore} -Xmx${globals.launcherConfig.savedRam}G -XX:MaxPermSize=${globals.launcherConfig.savedMaxPermSize}m ${mainClass} --username ${globals.username} --version ${packetConfig.minecraftVersion} --gameDir ${packetDir} --assetsDir ${assetsPath} --assetIndex ${packetConfig.assets} --uuid ${globals.uuid} --accessToken ${globals.accessToken} --userProperties {} --userType mojang ${forgeCommand}`);
 }
 

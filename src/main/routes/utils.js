@@ -46,7 +46,7 @@ var utils = module.exports = {
             });
 
             req.on('end', function() {
-                utils.showProgress(51,99,"Waiting for modpack uncompressed","Unzipping modpack...");
+                utils.showProgress(50,100,"Waiting for modpack uncompressed","Unzipping modpack...");
                 //utils.showProgress(50,100,"Waiting for modpack uncompressed","Unzipping modpack...");
                 var zip = new archiver(targetPath + packetName + fileExtension);
                 zip.extractAllTo(targetPath,true);
@@ -62,7 +62,7 @@ var utils = module.exports = {
     },
 
     showProgress: function (mainPercentage,subPercentage,action,status){
-        console.log(mainPercentage);
+        //console.log(mainPercentage);
         //console.log(subPercentage);
         globals.mainWin.webContents.send('update', {mainPercentage: mainPercentage,subPercentage: subPercentage,action: action,status: status});
         globals.mainWin.setProgressBar(mainPercentage/100);

@@ -8,6 +8,7 @@ module.exports = {
         const rp        = require('request-promise');
         const path      = require('path');
         const url       = require('url');
+        const fs        = require('fs');
 
         let serverStatus;
 
@@ -289,13 +290,13 @@ module.exports = {
             globals.launcherConfig.savedRam = payload.ram;
             globals.launcherConfig.savedMaxPermSize = payload.maxPermSize;
             if (globals.launcherConfig.installed_modpacks.includes(globals.selectedPacket.Name+"-"+globals.selectedPacket.Version)) {
-                require('./launchGame')(globals.selectedPacket);
+                require('./launchGame')(globals.selectedPacket.Name);
             } else {
                 //Se esiste una vecchia versiona installata la cancello
                 if(fs.existsSync(globals.launcherDir+"/modpacks/"+globals.selectedPacket.Name)){
                     require('rimraf').sync(globals.launcherDir+"/modpacks/"+globals.selectedPacket.Name);
                 }
-                await utils.downloadModPack(`http://soulnetwork.it/launcher/modpacks/${process.platform}/${globals.selectedPacket.Name}.zip`, globals.launcherDir + "/modpacks/" ,globals.selectedPacket, '.zip', true, globals.selectedPacket, require('./launchGame'));
+                await utils.downloadModPack(`http://51.91.249.64/modpacks/${process.platform}/${globals.selectedPacket.Name}.zip`, globals.launcherDir + "/modpacks/" ,globals.selectedPacket.Name, '.zip', true, globals.selectedPacket.Name, require('./launchGame'));
                 globals.launcherConfig.installed_modpacks.push(globals.selectedPacket.Name+"-"+globals.selectedPacket.Version);
             }
             utils.saveConfig();
